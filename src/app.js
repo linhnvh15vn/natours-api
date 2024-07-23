@@ -3,6 +3,7 @@
 const express = require("express");
 const morgan = require("morgan");
 
+const AppError = require("./utils/app-error");
 const authRouter = require("./routes/auth.routes");
 
 const app = express();
@@ -20,5 +21,19 @@ app.get("/", (req, res) => {
 
 // Routes
 app.use("/api/v1/auth", authRouter);
+
+app.all("*", (req, res, next) => {
+  next(new AppError(`Can not find ${req.originalUrl} on this server!`, 404));
+});
+
+app.use((err, req, res, next) => {
+  err.statusCode = err.statusCode || 500;
+  err.status = err.status || "error";
+
+  res.status(err.statusCode).json({
+    status: err.status,
+    message: err.message,
+  });
+});
 
 module.exports = app;
