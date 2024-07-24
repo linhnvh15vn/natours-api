@@ -11,7 +11,7 @@ exports.getAllTours = async (query) => {
   let queryStr = JSON.stringify(queryObj);
   queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
 
-  let query = Tour.find(JSON.parse(queryStr));
+  let executedQuery = Tour.find(JSON.parse(queryStr));
 
   if (query.sort) {
     query = query.sort(query.sort);
@@ -23,9 +23,9 @@ exports.getAllTours = async (query) => {
   const limit = query.limit || 15;
   const skip = (page - 1) * limit;
 
-  query = query.skip(skip).limit(limit);
+  executedQuery = executedQuery.skip(skip).limit(limit);
 
-  const tours = await query;
+  const tours = await executedQuery;
 
   const totalItems = await Tour.countDocuments();
   const totalPage = Math.ceil(totalItems / limit);

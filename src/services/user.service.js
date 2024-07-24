@@ -8,7 +8,7 @@ exports.getAllUsers = async (query) => {
   const queryObj = { ...query };
   excludedFields.forEach((field) => delete queryObj[field]);
 
-  let query = User.find(queryObj);
+  let executedQuery = User.find(queryObj);
 
   if (query.sort) {
     query = query.sort(query.sort);
@@ -20,7 +20,7 @@ exports.getAllUsers = async (query) => {
   const limit = query.limit || 15;
   const skip = (page - 1) * limit;
 
-  query = query.skip(skip).limit(limit);
+  executedQuery = executedQuery.skip(skip).limit(limit);
 
   const users = await query;
 
