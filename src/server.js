@@ -1,3 +1,5 @@
+"use strict";
+
 const dotenv = require("dotenv");
 const app = require("./app");
 const { default: mongoose } = require("mongoose");
