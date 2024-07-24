@@ -6,6 +6,7 @@ const morgan = require("morgan");
 const AppError = require("./utils/app-error");
 const authRouter = require("./routes/auth.routes");
 const tourRouter = require("./routes/tour.routes");
+const userRouter = require("./routes/user.routes");
 
 const app = express();
 
@@ -23,7 +24,9 @@ app.get("/", (req, res) => {
 // Routes
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/tour", tourRouter);
+app.use("/api/v1/users", userRouter);
 
+// Handle global errors
 app.all("*", (req, res, next) => {
   next(new AppError(`Can not find ${req.originalUrl} on this server!`, 404));
 });
