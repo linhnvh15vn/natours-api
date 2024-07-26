@@ -11,9 +11,9 @@ exports.getAllUsers = async (query) => {
   let executedQuery = User.find(queryObj);
 
   if (query.sort) {
-    query = query.sort(query.sort);
+    executedQuery = executedQuery.sort(query.sort);
   } else {
-    query = query.sort("-createdAt");
+    executedQuery = executedQuery.sort("-createdAt");
   }
 
   const page = query.page || 1;

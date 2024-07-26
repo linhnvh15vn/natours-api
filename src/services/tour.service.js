@@ -5,18 +5,22 @@ const AppError = require("../utils/app-error");
 const { excludedFields } = require("../constants");
 
 exports.getAllTours = async (query) => {
-  const queryObj = { ...query };
+  let queryObj = { ...query };
   excludedFields.forEach((field) => delete queryObj[field]);
+  delete queryObj["name"];
 
   let queryStr = JSON.stringify(queryObj);
   queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
 
-  let executedQuery = Tour.find(JSON.parse(queryStr));
+  let executedQuery = Tour.find({
+    name: new RegExp(query.name, "i"),
+    ...JSON.parse(queryStr),
+  });
 
   if (query.sort) {
-    query = query.sort(query.sort);
+    executedQuery = executedQuery.sort(query.sort);
   } else {
-    query = query.sort("-createdAt");
+    executedQuery = executedQuery.sort("-createdAt");
   }
 
   const page = query.page || 1;
