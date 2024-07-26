@@ -42,7 +42,7 @@ app.get("/", (req, res) => {
 
 // Routes
 app.use("/api/v1/auth", authRouter);
-app.use("/api/v1/tour", tourRouter);
+app.use("/api/v1/tours", tourRouter);
 app.use("/api/v1/users", userRouter);
 
 // Handle global errors
