@@ -22,7 +22,7 @@ exports.getAllUsers = async (query) => {
 
   executedQuery = executedQuery.skip(skip).limit(limit);
 
-  const users = await query;
+  const users = await executedQuery;
 
   const totalItems = await User.countDocuments();
   const totalPage = Math.ceil(totalItems / limit);
