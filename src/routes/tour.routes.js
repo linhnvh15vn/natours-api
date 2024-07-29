@@ -4,8 +4,11 @@ const express = require("express");
 
 const tourController = require("../controllers/tour.controller");
 const authMiddleware = require("../middlewares/auth.middleware");
+const reviewRouter = require("./review.routes");
 
 const tourRouter = express.Router();
+
+tourRouter.use("/:tourId/reviews", reviewRouter);
 
 tourRouter
   .route("/")
