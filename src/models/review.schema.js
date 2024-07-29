@@ -55,7 +55,7 @@ reviewSchema.post(/^findOneAnd/, async function () {
 reviewSchema.statics.calcAverageRatings = async function (tourId) {
   const stats = await this.aggregate([
     {
-      $match: { tour: touId },
+      $match: { tour: tourId },
     },
     {
       $group: {
