@@ -44,7 +44,7 @@ exports.getAllTours = async (query) => {
 };
 
 exports.getTourById = async (_id) => {
-  const tour = await Tour.findById(_id);
+  const tour = await Tour.findById(_id).populate("reviews");
   if (!tour) {
     throw new AppError("No tours were found with this id", 404);
   }
