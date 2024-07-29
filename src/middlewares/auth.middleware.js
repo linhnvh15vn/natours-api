@@ -22,8 +22,8 @@ exports.protect = catchAsync(async (req, res, next) => {
     );
   }
 
-  const decoded = jwt.verify(token, process.env.JWT_SECRETE);
-  const user = User.findById(decoded._id);
+  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  const user = await User.findById(decoded._id);
   if (!user) {
     throw new AppError(
       "The user belonging to this token does no longer exist.",
