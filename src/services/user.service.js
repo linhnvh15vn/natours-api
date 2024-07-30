@@ -5,6 +5,17 @@ const User = require("../models/user.schema");
 const AppError = require("../utils/app-error");
 
 exports.getAllUsers = async (query) => {
+  if (query.all) {
+    const users = await User.find({
+      $or: [{ role: "guide" }, { role: "lead-guide" }],
+    });
+
+    return users.map((user) => ({
+      label: user.name,
+      value: user._id,
+    }));
+  }
+
   const queryObj = { ...query };
   excludedFields.forEach((field) => delete queryObj[field]);
 
