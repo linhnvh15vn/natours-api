@@ -18,8 +18,14 @@ exports.getAllUsers = async (query) => {
 
   const queryObj = { ...query };
   excludedFields.forEach((field) => delete queryObj[field]);
+  delete queryObj["name"];
+  delete queryObj["email"];
 
-  let executedQuery = User.find(queryObj);
+  let executedQuery = User.find({
+    name: new RegExp(query.name, "i"),
+    email: new RegExp(query.email, "i"),
+    ...queryObj,
+  });
 
   if (query.sort) {
     executedQuery = executedQuery.sort(query.sort);
@@ -35,7 +41,11 @@ exports.getAllUsers = async (query) => {
 
   const users = await executedQuery;
 
-  const totalItems = await User.countDocuments();
+  const totalItems = await User.countDocuments({
+    name: new RegExp(query.name, "i"),
+    email: new RegExp(query.email, "i"),
+    ...queryObj,
+  });
   const totalPage = Math.ceil(totalItems / limit);
 
   return {

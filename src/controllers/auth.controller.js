@@ -11,9 +11,17 @@ exports.httpSignup = catchAsync(async (req, res, next) => {
 });
 
 exports.httpLogin = catchAsync(async (req, res, next) => {
+  const data = await authService.login(req.body);
+
+  res.cookie("token", data.token, {
+    expires: new Date(Date.now() + 60 * 60 * 1000),
+    // secure: true,
+    httpOnly: true,
+  });
+
   return res.status(200).json({
     status: "success",
-    data: await authService.login(req.body),
+    data,
   });
 });
 
