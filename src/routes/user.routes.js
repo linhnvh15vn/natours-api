@@ -7,11 +7,19 @@ const authMiddleware = require("../middlewares/auth.middleware");
 const userRouter = express.Router();
 
 userRouter.get(
+  "/me",
+  authMiddleware.protect,
+  userController.httpGetMe,
+  userController.httpGetUserById
+);
+
+userRouter.get(
   "/",
   authMiddleware.protect,
   authMiddleware.restrictTo("admin"),
   userController.httpGetAllUsers
 );
+
 userRouter
   .route("/:_id")
   .get(authMiddleware.protect, userController.httpGetUserById)
