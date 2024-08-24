@@ -37,6 +37,6 @@ exports.httpForgotPassword = catchAsync(async (req, res, next) => {
 exports.httpResetPassword = catchAsync(async (req, res, next) => {
   return res.status(200).json({
     status: "success",
-    data: await authService.resetPassword(req.params.resetToken.req.body),
+    data: await authService.resetPassword(req.params.resetToken, req.body),
   });
 });

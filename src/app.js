@@ -14,6 +14,7 @@ const tourRouter = require("./routes/tour.routes");
 const userRouter = require("./routes/user.routes");
 const bookingRouter = require("./routes/booking.routes");
 const cookieParser = require("cookie-parser");
+const compression = require("compression");
 
 const app = express();
 
@@ -39,6 +40,8 @@ if (process.env.NODE_ENV === "development") {
 // app.use("/api", limiter);
 
 app.use(express.json({ limit: "10kb" }));
+
+app.use(compression());
 
 app.use(mongoSanitize());
 app.use(xss());
