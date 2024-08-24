@@ -1,14 +1,15 @@
 "use strict";
 
-const dotenv = require("dotenv");
+require("dotenv").config();
 const app = require("./app");
 const { default: mongoose } = require("mongoose");
-
-dotenv.config();
 
 mongoose.connect(process.env.MONGO_URI).then((_) => {
   console.log("MongoDB connection successful!");
 });
+
+mongoose.set("debug", true);
+mongoose.set("debug", { color: true });
 
 const PORT = process.env.PORT;
 

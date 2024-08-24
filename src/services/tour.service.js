@@ -29,7 +29,9 @@ exports.getAllTours = async (query) => {
 
   executedQuery = executedQuery.skip(skip).limit(limit);
 
-  const tours = await executedQuery;
+  const tours = await executedQuery.select(
+    "_id name duration maxGroupSize difficulty ratingsAverage ratingsQuantity price summary imageCover startDates startLocation locations"
+  );
 
   const totalItems = await Tour.countDocuments();
   const totalPage = Math.ceil(totalItems / limit);

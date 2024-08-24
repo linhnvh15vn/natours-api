@@ -12,6 +12,9 @@ const AppError = require("./utils/app-error");
 const authRouter = require("./routes/auth.routes");
 const tourRouter = require("./routes/tour.routes");
 const userRouter = require("./routes/user.routes");
+const bookingRouter = require("./routes/booking.routes");
+const cookieParser = require("cookie-parser");
+const compression = require("compression");
 
 const app = express();
 
@@ -23,7 +26,12 @@ const limiter = rateLimit({
 
 // Middlewares
 app.use(helmet());
-app.use(cors());
+app.use(
+  cors({
+    credentials: true,
+    origin: "http://localhost:3000",
+  })
+);
 
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
@@ -33,17 +41,18 @@ if (process.env.NODE_ENV === "development") {
 
 app.use(express.json({ limit: "10kb" }));
 
+app.use(compression());
+
 app.use(mongoSanitize());
 app.use(xss());
 
-app.get("/", (req, res) => {
-  res.status(200).json("Ok!");
-});
+app.use(cookieParser());
 
 // Routes
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/tours", tourRouter);
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/bookings", bookingRouter);
 
 // Handle global errors
 app.all("*", (req, res, next) => {

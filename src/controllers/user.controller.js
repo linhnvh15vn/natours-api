@@ -3,6 +3,11 @@
 const userService = require("../services/user.service");
 const catchAsync = require("../utils/catch-async");
 
+exports.httpGetMe = async (req, res, next) => {
+  req.params._id = req.user._id;
+  next();
+};
+
 exports.httpGetAllUsers = catchAsync(async (req, res, next) => {
   return res.status(200).json({
     status: "success",

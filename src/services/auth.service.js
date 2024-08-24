@@ -74,13 +74,16 @@ exports.resetPassword = async (resetToken, body) => {
     throw new AppError("Token is invalid or expired!", 400);
   }
 
-  user.password = newPassword;
-  user.confirmPassword = confirmNewPassword;
+  console.log(resetToken);
+  console.log(body);
+
+  user.password = body.newPassword;
+  user.passwordConfirm = body.newPasswordConfirm;
   user.passwordResetToken = undefined;
   user.passwordResetExpires = undefined;
 
   await user.save();
-  const token = signToken({ _id: user._id });
+  const token = signJwt({ _id: user._id });
 
   return { token, user };
 };
